@@ -92,3 +92,28 @@ SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Type" = 'DEL' AND "GeneNam
 SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
 SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
 ```
+
+Group A base results:
+```
+1681
+723
+690
+784
+692
+689
+1730
+725
+691
+777
+688
+687
+1298
+718
+692
+720
+690
+692
+1671
+691
+average= 886 min= 687.0 max= 1730.0 median= 705.0
+```
