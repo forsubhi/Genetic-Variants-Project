@@ -1,26 +1,26 @@
 ```
 A- Chromosome and Type:
 
-SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Chromosome" = 'SNP';
-SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Chromosome" = 'INV';
-SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Chromosome" = 'INS';
-SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Chromosome" = 'INDEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Chromosome" = 'CN';
-SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Chromosome" = 'DEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Chromosome" = 'SNP';
-SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Chromosome" = 'INV';
-SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Chromosome" = 'INS';
-SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Chromosome" = 'INDEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Chromosome" = 'CN';
-SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Chromosome" = 'DEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Chromosome" = 'SNP';
-SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Chromosome" = 'INV';
-SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Chromosome" = 'INS';
-SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Chromosome" = 'INDEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Chromosome" = 'CN';
-SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Chromosome" = 'DEL';
-SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Chromosome" = 'SNP';
-SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Chromosome" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Type" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Type" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Type" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Type" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Type" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Type" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Type" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Type" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Type" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Type" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Type" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Type" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Type" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Type" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Type" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Type" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Type" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Type" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Type" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Type" = 'INV';
 
 B- Chromosome, Type and GeneName:
 
