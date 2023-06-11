@@ -1,86 +1,94 @@
-The dataset that is used for tests:
-
-https://www.kaggle.com/datasets/carrie1/ecommerce-data
-
-https://github.com/brettwooldridge/HikariCP/wiki/About-Pool-Sizing#connections--core_count--2--effective_spindle_count
-
-We can check the Query plan of Postgres using Explain command like the following example:
-
-Search for product Query:
-````
-EXPLAIN analyze  select  * from product p where details  like '%solid cotton blend collar%'
-````
-
-````
-QUERY PLAN                                                                                             |
--------------------------------------------------------------------------------------------------------+
-Seq Scan on product p  (cost=0.00..1588.47 rows=3 width=126) (actual time=0.763..38.480 rows=9 loops=1)|
-  Filter: ((details)::text ~~ '%solid cotton blend collar%'::text)                                     |
-  Rows Removed by Filter: 30749                                                                        |
-Planning Time: 0.261 ms                                                                                |
-Execution Time: 38.511 ms                                                                              |
-````
-
-For enhancing the performance of Postgres like statement we should enable pg_trgm extension:
-````
-CREATE EXTENSION pg_trgm;
-SELECT oid, extname, extversion FROM pg_extension;
-````
-
-After adding index:
-````
-CREATE INDEX idx_gin ON public.product  using  gin (details gin_trgm_ops);
-````
-
-````
-QUERY PLAN                                                                                                       |
------------------------------------------------------------------------------------------------------------------+
-Bitmap Heap Scan on product p  (cost=172.02..183.61 rows=3 width=126) (actual time=6.049..6.115 rows=9 loops=1)  |
-  Recheck Cond: ((details)::text ~~ '%solid cotton blend collar%'::text)                                         |
-  Rows Removed by Index Recheck: 17                                                                              |
-  Heap Blocks: exact=25                                                                                          |
-  ->  Bitmap Index Scan on idx_gin  (cost=0.00..172.02 rows=3 width=0) (actual time=6.027..6.028 rows=26 loops=1)|
-        Index Cond: ((details)::text ~~ '%solid cotton blend collar%'::text)                                     |
-Planning Time: 0.665 ms                                                                                          |
-Execution Time: 6.317 ms                                                                                         |                                                                          |
-````
-
-Search for customer invoice details Query:
-
-``` sql
-EXPLAIN analyze SELECT  * from invoice_detail where customerid ='18074' 
 ```
+A- Chromosome and Type:
 
-````
-QUERY PLAN                                                                                                                     |
--------------------------------------------------------------------------------------------------------------------------------+
-Gather  (cost=1000.00..21801.44 rows=90 width=95) (actual time=9.445..300.121 rows=13 loops=1)                                 |
-  Workers Planned: 2                                                                                                           |
-  Workers Launched: 2                                                                                                          |
-  ->  Parallel Seq Scan on invoice_detail  (cost=0.00..20792.44 rows=38 width=95) (actual time=189.326..281.729 rows=4 loops=3)|
-        Filter: (customerid = 18074)                                                                                           |
-        Rows Removed by Filter: 180632                                                                                         |
-Planning Time: 0.128 ms                                                                                                        |
-Execution Time: 300.164 ms                                                                                                     |                                           |
-````
-After adding index:
+SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Chromosome" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Chromosome" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Chromosome" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Chromosome" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Chromosome" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Chromosome" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Chromosome" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Chromosome" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Chromosome" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Chromosome" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Chromosome" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Chromosome" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Chromosome" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Chromosome" = 'INV';
+SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Chromosome" = 'INS';
+SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Chromosome" = 'INDEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Chromosome" = 'CN';
+SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Chromosome" = 'DEL';
+SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Chromosome" = 'SNP';
+SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Chromosome" = 'INV';
 
-````
-CREATE INDEX invoice_detail_customerid_idx ON public.invoice_detail (customerid);
-````
+B- Chromosome, Type and GeneName:
 
-````
-QUERY PLAN                                                                                                                            |
---------------------------------------------------------------------------------------------------------------------------------------+
-Bitmap Heap Scan on invoice_detail  (cost=5.12..347.14 rows=90 width=95) (actual time=0.113..0.118 rows=13 loops=1)                   |
-  Recheck Cond: (customerid = 18074)                                                                                                  |
-  Heap Blocks: exact=1                                                                                                                |
-  ->  Bitmap Index Scan on invoice_detail_customerid_idx  (cost=0.00..5.10 rows=90 width=0) (actual time=0.074..0.074 rows=13 loops=1)|
-        Index Cond: (customerid = 18074)                                                                                              |
-Planning Time: 0.311 ms                                                                                                               |
-Execution Time: 0.157 ms                                                                                                              |
-````
+SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%';
 
 
+C- Chromosome, Type, GeneName with PosStart and PosEnd:
 
+SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 10000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 100000 AND "PositionStart" <= 20000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
+SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000;
 
+C- Chromosome, Type, GeneName with PosStart and PosEnd and Clinical Significance:
+
+SELECT * FROM "Variants" WHERE "Chromosome" = 1 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 2 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 3 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 4 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 5 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 6 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 7 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 8 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 9 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 10 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 11 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 12 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 13 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 14 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 10000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 15 AND "Type" = 'INS' AND "GeneName" LIKE '%CAN%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 16 AND "Type" = 'INDEL' AND "GeneName" LIKE '%OR1%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 17 AND "Type" = 'CN' AND "GeneName" LIKE '%PKN2%' AND "PositionStart" >= 1000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 18 AND "Type" = 'DEL' AND "GeneName" LIKE '%PAFAH%' AND "PositionStart" >= 100000 AND "PositionStart" <= 20000000 AND "ClinicalSignificance" like '%Pathogenic%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 19 AND "Type" = 'SNP' AND "GeneName" LIKE '%RRC%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Likely_benign%';
+SELECT * FROM "Variants" WHERE "Chromosome" = 20 AND "Type" = 'INV' AND "GeneName" LIKE '%NF%' AND "PositionStart" >= 1000 AND "PositionStart" <= 2000000 AND "ClinicalSignificance" like '%Pathogenic%';
+```
