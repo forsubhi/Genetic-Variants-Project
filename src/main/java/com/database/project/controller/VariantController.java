@@ -3,6 +3,7 @@ package com.database.project.controller;
 import com.database.project.model.Variant;
 import com.database.project.repository.VariantRepository;
 import com.database.project.service.VariantService;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 
 @RestController
 @RequestMapping("/variant")
+@Log
 public class VariantController {
 
     @Autowired
@@ -29,6 +32,7 @@ public class VariantController {
     @GetMapping("/sample")
     public ResponseEntity<List<Variant>> getSample() {
         try {
+            log.info("Test");
             ArrayList products = new ArrayList<>();
             variantRepository.findAll(Pageable.ofSize(10)).forEach(products::add);
 
@@ -40,11 +44,11 @@ public class VariantController {
 
 
     @GetMapping("/test")
-    public ResponseEntity<Integer> test() {
+    public ResponseEntity<String> test() {
         try {
-            Integer integer = variantService.testQueriesA();
+            String results = variantService.testQueriesA();
 
-            return new ResponseEntity<>(integer, HttpStatus.OK);
+            return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
