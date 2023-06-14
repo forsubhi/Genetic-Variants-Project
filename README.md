@@ -36,3 +36,6 @@ Index Scan using variants_chromosome_idx on variants  (cost=0.43..22486.67 rows=
 Planning Time: 0.152 ms                                                                                                                           |
 Execution Time: 187.262 ms                                                                                                                        |
 ```
+```
+CREATE INDEX variants_type_idx ON public.variants ("type");
+```
