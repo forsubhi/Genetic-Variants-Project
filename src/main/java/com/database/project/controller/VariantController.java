@@ -57,12 +57,33 @@ public class VariantController {
     @GetMapping("/testB")
     public ResponseEntity<String> testB() {
         try {
-            String results = variantService.testQueriesA();
+            String results = variantService.testQueriesB();
             return new ResponseEntity<>(results, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @GetMapping("/testC")
+    public ResponseEntity<String> testC() {
+        try {
+            String results = variantService.testQueriesC();
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @GetMapping("/testD")
+    public ResponseEntity<String> testD() {
+        try {
+            String results = variantService.testQueriesD();
+            return new ResponseEntity<>(results, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
 
 }

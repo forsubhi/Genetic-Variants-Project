@@ -30,6 +30,18 @@ public class VariantService {
         return result;
     }
 
+    public String testQueriesC() {
+        String file = ResourceReader.readResourceFile("C.sql");
+        String result = executeQueries(file);
+        return result;
+    }
+
+    public String testQueriesD() {
+        String file = ResourceReader.readResourceFile("D.sql");
+        String result = executeQueries(file);
+        return result;
+    }
+
     private String executeQueries(String file) {
         String result = "";
         String[] queries = file.split("\n");
@@ -41,7 +53,8 @@ public class VariantService {
                 log.info("start with query number " + i + " j=" + j);
                 String query = queries[i];
                 long start = System.currentTimeMillis();
-                variantRepository.executeNativeQuery(query);
+                Integer integer = variantRepository.executeNativeQuery(query);
+                // log.info("result size is = "+integer);
                 long end = System.currentTimeMillis();
                 periodSum += end - start;
             }
