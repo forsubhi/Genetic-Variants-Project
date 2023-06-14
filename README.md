@@ -22,3 +22,17 @@ Add index:
 ```
 CREATE INDEX variants_chromosome_idx ON public.variants (chromosome);
 ```
+
+```
+EXPLAIN analyze  SELECT * FROM "variants" WHERE "chromosome" = 1 AND "type" = 'SNP';
+```
+```
+QUERY PLAN                                                                                                                                           |
+-----------------------------------------------------------------------------------------------------------------------------------------------------+
+Index Scan using variants_chromosome_idx on variants  (cost=0.43..22486.67 rows=558960 width=107) (actual time=119.634..1780.559 rows=560412 loops=1)|
+  Index Cond: (chromosome = 1)                                                                                                                       |
+  Filter: (type = 'SNP'::text)                                                                                                                       |
+  Rows Removed by Filter: 77080                                                                                                                      |
+Planning Time: 411.780 ms                                                                                                                            |
+Execution Time: 1814.158 ms                                                                                                                          |
+```
