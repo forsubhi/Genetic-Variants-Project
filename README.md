@@ -17,3 +17,8 @@ JIT:                                                                            
   Timing: Generation 1.336 ms, Inlining 0.000 ms, Optimization 0.857 ms, Emission 13.645 ms, Total 15.839 ms                      |
 Execution Time: 917.759 ms                                                                                                        |
 ```
+
+Add index:
+```
+CREATE INDEX variants_chromosome_idx ON public.variants (chromosome);
+```
