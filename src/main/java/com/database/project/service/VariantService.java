@@ -63,15 +63,17 @@ public class VariantService {
             result += period + "<br>";
         }
 
-        int sum = results.stream().mapToInt(Long::intValue).sum();
-        result += "average= " + sum / queries.length + "\n";
-        log.info("average= " + sum / queries.length);
         double min = Collections.min(results);
         result += "min= " + min + "\n";
         log.info("min= " + min);
         double max = Collections.max(results);
         result += "max= " + max + "\n";
         log.info("max= " + max);
+
+        int sum = results.stream().mapToInt(Long::intValue).sum();
+        result += "average= " + sum / queries.length + "\n";
+        log.info("average= " + sum / queries.length);
+
         double median = Quantiles.median().compute(results);
         result += "median= " + median + "\n";
         return result;
